@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>عروض الحج | حج ميسر وسياحي وقرعة</title>
+<meta name="description" content="عروض وبرامج الحج والتسجيل والاستعلام عن البرامج.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="hero">
+  <nav class="nav container">
+    <div class="brand">Hamsa <span>Travel</span></div>
+    <a class="nav-btn" href="#booking">سجل بياناتك</a>
+  </nav>
+  <div class="hero-content container">
+    <span class="eyebrow">موسم الحج</span>
+    <h1>اختار برنامج الحج المناسب لك</h1>
+    <p>حج ميسر بالتقسيط، حج سياحي، أو حج القرعة حسب البرنامج الذي تختاره.</p>
+    <a class="primary" href="#offers">شاهد العروض</a>
+  </div>
+</header>
+
+<main>
+<section id="offers" class="section container">
+  <div class="section-head">
+    <span class="eyebrow">برامج الحج</span>
+    <h2>عروضنا</h2>
+    <p>الأسعار والتفاصيل يتم تحميلها من Google Sheets ويمكن تعديلها من الشيت بدون تعديل الموقع.</p>
+  </div>
+  <div id="offersGrid" class="offers-grid">
+    <div class="loading">جاري تحميل العروض...</div>
+  </div>
+</section>
+
+<section class="section dark">
+  <div class="container features">
+    <div><b>01</b><h3>اختار البرنامج</h3><p>حدد نوع الحج والبرنامج المناسب لك.</p></div>
+    <div><b>02</b><h3>سجل بياناتك</h3><p>أرسل بيانات التواصل الأساسية.</p></div>
+    <div><b>03</b><h3>نتواصل معك</h3><p>يتم مراجعة البيانات والتواصل معك لاستكمال الإجراءات.</p></div>
+  </div>
+</section>
+
+<section id="booking" class="section container">
+  <div class="section-head">
+    <span class="eyebrow">التسجيل</span>
+    <h2>سجل اهتمامك بالحج</h2>
+  </div>
+  <form id="bookingForm" class="booking-form">
+    <div class="field"><label>الاسم بالكامل</label><input name="name" required></div>
+    <div class="field"><label>رقم الهاتف</label><input name="phone" inputmode="tel" required></div>
+    <div class="field"><label>المحافظة</label><input name="governorate"></div>
+    <div class="field"><label>نوع الحج</label>
+      <select name="hajjType" id="hajjType" required>
+        <option value="">اختر</option>
+        <option>حج ميسر</option>
+        <option>حج سياحي</option>
+        <option>حج القرعة</option>
+      </select>
+    </div>
+    <div class="field full"><label>البرنامج</label>
+      <select name="programId" id="programId"><option value="">اختر نوع الحج أولاً</option></select>
+    </div>
+    <div class="field full"><label>ملاحظات</label><textarea name="notes" rows="4"></textarea></div>
+    <button class="primary full" type="submit">إرسال التسجيل</button>
+    <div id="formMessage" class="form-message"></div>
+  </form>
+</section>
+</main>
+
+<footer><div class="container">Hamsa Travel — عروض الحج</div></footer>
+<script src="app.js"></script>
+</body>
+</html>
