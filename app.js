@@ -1,6 +1,6 @@
 const CONFIG = {
   // ضع هنا رابط Google Apps Script الخاص بالموقع بعد النشر.
-  API_URL: "PASTE_GOOGLE_APPS_SCRIPT_URL_HERE"
+  API_URL: "https://script.google.com/macros/s/AKfycbyEbA8KHkSTuIJ8XlvjV8TB8C8cZpYpVTqgkiCaXwT_SFqlv9jdA8hpbR-vA4NlFz3FSQ/exec"
 };
 
 const fallbackOffers = [
