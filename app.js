@@ -1,41 +1,207 @@
 const CONFIG = {
-  // ضع هنا رابط Google Apps Script الخاص بالموقع بعد النشر.
   API_URL: "https://script.google.com/macros/s/AKfycbyEbA8KHkSTuIJ8XlvjV8TB8C8cZpYpVTqgkiCaXwT_SFqlv9jdA8hpbR-vA4NlFz3FSQ/exec"
 };
 
+// برامج الحج 1448 هـ لشركة همسة للسياحة.
+// البيانات التالية مبنية على الملف المرفوع، مع إبقاء الحج الميسر/السياحي + 5000 دولار/القرعة
+// كخيارات التسجيل التي طلبتها سابقًا.
 const fallbackOffers = [
-  {id:"mayassar", type:"حج ميسر", title:"الحج الميسر", price:"120000", currency:"جنيه", installmentMonths:24, installment:"5000 جنيه شهريًا", description:"دفع كامل للبرنامج مع إمكانية تقسيط مبلغ 120 ألف جنيه على 24 شهر."},
-  {id:"tourist", type:"حج سياحي", title:"الحج السياحي", price:"", currency:"", installmentMonths:"", installment:"", description:"برنامج الحج + 5,000 دولار حسب تفاصيل البرنامج المختار."},
-  {id:"lottery", type:"حج القرعة", title:"حج القرعة", price:"", currency:"", installmentMonths:"", installment:"", description:"اختيار البرنامج المناسب، والسعر والتفاصيل حسب البرنامج."}
+  {
+    id:"mayassar", type:"حج ميسر", title:"الحج الميسر", price:120000, currency:"جنيه",
+    installmentMonths:24, installment:"5,000 جنيه شهريًا",
+    description:"120,000 جنيه مع إمكانية التقسيط على 24 شهر."
+  },
+  {
+    id:"eco-230", type:"حج اقتصادي",
+    title:"برنامج حج بري — أقل فترة إقامة بالعزيزية بدون تحسين",
+    price:230000, currency:"جنيه",
+    deposit:"50,150 جنيه + 150 جنيه رسوم إلكترونية لوزارة السياحة",
+    note:"سعر الفرد في الغرفة الرباعية أو الخماسية لا يشمل تذكرة الطيران.",
+    rows:[
+      ["المدينة المنورة","نسك المدينة أو ما يماثلها (المنطقة المركزية)","من 2 ذو الحجة إلى 6 ذو الحجة","إفطار + عشاء وجبات"],
+      ["مكة المكرمة","عمارات فندقية فاخرة بالعزيزية أو ما يماثلها","من 6 ذو الحجة إلى 17 ذو الحجة","إفطار + عشاء وجبات"],
+      ["المناسك","مخيمات فاخرة بعرفات ومنى","من 8 ذو الحجة إلى 13 ذو الحجة","إفطار + غداء + عشاء + مشروبات + فاكهة + عصائر"]
+    ],
+    details:["متاح برنامج حج مباشر (باقات وزارة السياحة) بدون قرعة ولمن سبق له الحج من قبل."]
+  },
+  {
+    id:"eco-247", type:"حج اقتصادي",
+    title:"برنامج حج بري تحسين",
+    price:247000, currency:"جنيه",
+    deposit:"50,150 جنيه + 150 جنيه رسوم إلكترونية لوزارة السياحة",
+    note:"سعر الفرد في الغرفة الرباعية أو الخماسية لا يشمل تذكرة الطيران.",
+    rows:[
+      ["المدينة المنورة","نسك المدينة أو ما يماثلها (المنطقة المركزية)","من 2 ذو الحجة إلى 6 ذو الحجة","إفطار + عشاء وجبات"],
+      ["مكة المكرمة","عمارات فندقية فاخرة بالعزيزية أو ما يماثلها","من 6 ذو الحجة إلى 8 ذو الحجة","إفطار + عشاء وجبات"],
+      ["المناسك","مخيمات فاخرة بعرفات ومنى","من 8 ذو الحجة إلى 13 ذو الحجة","إفطار + غداء + عشاء + مشروبات + فاكهة + عصائر"],
+      ["مكة المكرمة","أنجم أو بولمان زمزم على بلاط الحرم","من 15 ذو الحجة إلى 21 ذو الحجة","إفطار فقط"]
+    ],
+    details:["الانتقال بين مكة والمدينة بقطار الحرمين السريع أو العكس.","متاح برنامج حج مباشر (باقات وزارة السياحة) بدون قرعة ولمن سبق له الحج من قبل."]
+  },
+  {
+    id:"eco-270", type:"حج اقتصادي",
+    title:"برنامج حج اقتصادي — أقل فترة إقامة بالعزيزية بدون تحسين",
+    price:270000, currency:"جنيه",
+    deposit:"80,150 جنيه + 150 جنيه رسوم إلكترونية لوزارة السياحة",
+    note:"سعر الفرد في الغرفة الرباعية أو الخماسية لا يشمل تذكرة الطيران.",
+    rows:[
+      ["المدينة المنورة","نسك المدينة أو ما يماثلها (المنطقة المركزية)","من 2 ذو الحجة إلى 6 ذو الحجة","إفطار + عشاء وجبات"],
+      ["مكة المكرمة","عمارات فندقية فاخرة بالعزيزية أو ما يماثلها","من 6 ذو الحجة إلى 17 ذو الحجة","إفطار + عشاء وجبات"],
+      ["المناسك","مخيمات فاخرة بعرفات ومنى","من 8 ذو الحجة إلى 13 ذو الحجة","إفطار + غداء + عشاء + مشروبات + فاكهة + عصائر"]
+    ],
+    details:["الانتقال من مكة إلى المدينة بقطار الحرمين السريع أو العكس."]
+  },
+  {
+    id:"eco-287", type:"حج اقتصادي",
+    title:"برنامج حج اقتصادي — أقل فترة إقامة بالعزيزية وأطول فترة تحسين بعد الحج",
+    price:287000, currency:"جنيه",
+    deposit:"80,150 جنيه + 150 جنيه رسوم إلكترونية لوزارة السياحة",
+    note:"سعر الفرد في الغرفة الرباعية أو الخماسية لا يشمل تذكرة الطيران.",
+    rows:[
+      ["المدينة المنورة","نسك المدينة أو ما يماثلها (المنطقة المركزية)","من 2 ذو الحجة إلى 6 ذو الحجة","إفطار + عشاء وجبات"],
+      ["مكة المكرمة","عمارات فندقية فاخرة بالعزيزية أو ما يماثلها","من 6 ذو الحجة إلى 8 ذو الحجة","إفطار + عشاء وجبات"],
+      ["المناسك","مخيمات فاخرة بعرفات ومنى","من 8 ذو الحجة إلى 13 ذو الحجة","إفطار + غداء + عشاء + مشروبات + فاكهة + عصائر"],
+      ["مكة المكرمة","أنجم أو بولمان زمزم على بلاط الحرم","من 15 ذو الحجة إلى 21 ذو الحجة","إفطار فقط"]
+    ],
+    details:["الانتقال بين مكة والمدينة بقطار الحرمين السريع أو العكس."]
+  },
+  {
+    id:"eco-287-full", type:"حج اقتصادي",
+    title:"برنامج الحج الاقتصادي — أطول فترة تحسين حج سياحي",
+    price:287000, currency:"جنيه",
+    deposit:"80,150 جنيه + 150 جنيه رسوم إلكترونية لوزارة السياحة",
+    note:"سعر الفرد في الغرفة الرباعية أو الخماسية لا يشمل تذكرة الطيران.",
+    rows:[
+      ["مكة المكرمة","بولمان زمزم أو أنجم أو ما يماثله","من 25 ذو القعدة إلى 4 ذو الحجة","إفطار + عشاء وجبات"],
+      ["مكة المكرمة","عمارات فندقية فاخرة بالعزيزية أو ما يماثلها","من 4 ذو الحجة إلى 8 ذو الحجة","إفطار + عشاء وجبات"],
+      ["المناسك","مخيمات مكيفة فاخرة بعرفات ومنى","من 8 ذو الحجة إلى 13 ذو الحجة","إفطار + غداء + عشاء + مشروبات + فاكهة + عصائر"],
+      ["المدينة المنورة","نسك المدينة أو ما يماثلها (المنطقة المركزية)","من 14 ذو الحجة إلى 17 ذو الحجة","إفطار + عشاء وجبات"]
+    ],
+    details:["الانتقال بين مكة والمدينة بقطار الحرمين السريع أو العكس."]
+  },
+  {
+    id:"eco-290", type:"حج اقتصادي",
+    title:"برنامج الحج الاقتصادي — موسم كامل بمكة (نقل للحرم والعودة)",
+    price:290000, currency:"جنيه",
+    deposit:"80,150 جنيه + 150 جنيه رسوم إلكترونية لوزارة السياحة",
+    note:"سعر الفرد في الغرفة الرباعية أو الخماسية لا يشمل تذكرة الطيران.",
+    rows:[
+      ["مكة المكرمة","فندق أبراج الصفوة أو ما يماثله","من 1 ذو الحجة إلى 14 ذو الحجة","إفطار + عشاء وجبات"],
+      ["المناسك","مخيمات فاخرة بعرفات ومنى","من 8 ذو الحجة إلى 13 ذو الحجة","إفطار + غداء + عشاء + مشروبات + فاكهة + عصائر"],
+      ["المدينة المنورة","نسك المدينة أو ما يماثلها (المنطقة المركزية)","من 14 ذو الحجة إلى 17 ذو الحجة","إفطار + عشاء وجبات"]
+    ],
+    details:["الانتقال من مكة إلى المدينة بقطار الحرمين السريع أو العكس."]
+  },
+  {
+    id:"tourist-395", type:"حج سياحي",
+    title:"برنامج الحج السياحي — مستوى ج",
+    price:395000, currency:"جنيه",
+    deposit:"120,150 جنيه + 150 جنيه رسوم إلكترونية لوزارة السياحة",
+    note:"سعر الفرد في الغرفة الرباعية لا يشمل تذكرة الطيران.",
+    rows:[
+      ["المدينة المنورة","اعمار رويال أو ما يماثلها (المنطقة المركزية)","من 4 ذو الحجة إلى 7 ذو الحجة","إفطار + عشاء وجبات"],
+      ["مكة المكرمة","فندق بالعزيزية قريب من المناسك","من 7 ذو الحجة إلى 14 ذو الحجة","إفطار + عشاء وجبات"],
+      ["المناسك","مخيمات مكيفة فاخرة بعرفات ومنى","من 8 ذو الحجة إلى 13 ذو الحجة","إفطار + عشاء وجبات"],
+      ["المدينة المنورة","بولمان زمزم أو أنجم أو ما يماثله","من 14 ذو الحجة إلى 17 ذو الحجة","إفطار + عشاء وجبات"]
+    ],
+    details:["الانتقال من مكة إلى المدينة بقطار الحرمين السريع أو العكس."]
+  },
+  {
+    id:"tourist-545", type:"حج سياحي",
+    title:"برنامج الحج السياحي ب — يبعد عن الحرم من 250 متر إلى 1250 متر",
+    price:545000, currency:"جنيه",
+    deposit:"120,150 جنيه + 150 جنيه رسوم إلكترونية لوزارة السياحة",
+    note:"سعر الفرد في الغرفة الرباعية لا يشمل تذكرة الطيران.",
+    rows:[
+      ["المدينة المنورة","اعمار رويال أو ما يماثلها (المنطقة المركزية)","من 1 ذو الحجة إلى 4 ذو الحجة","إفطار + عشاء أوبن بوفيه"],
+      ["مكة المكرمة","فندق الشهداء أو رويال حماسةتيك أو ما يماثله","من 4 ذو الحجة إلى 14 ذو الحجة","إفطار + عشاء أوبن بوفيه"],
+      ["المناسك","مخيمات مكيفة فاخرة بعرفات ومنى","من 8 ذو الحجة إلى 13 ذو الحجة","إفطار + غداء + عشاء + مشروبات + فاكهة + عصائر"]
+    ],
+    details:["الانتقال من مكة إلى المدينة بقطار الحرمين السريع أو العكس."]
+  },
+  {
+    id:"direct-650", type:"حج سياحي",
+    title:"برنامج الحج السياحي أ — يبعد عن الحرم من 50 متر إلى 250 متر",
+    price:650000, currency:"جنيه",
+    deposit:"120,150 جنيه + 150 جنيه رسوم إلكترونية لوزارة السياحة",
+    note:"سعر الفرد في الغرفة الرباعية لا يشمل تذكرة الطيران.",
+    rows:[
+      ["المدينة المنورة","الحارثية أو ما يماثلها (المنطقة المركزية)","من 1 ذو الحجة إلى 4 ذو الحجة","إفطار + عشاء أوبن بوفيه"],
+      ["مكة المكرمة","فندق الصفوة أو بولمان زمزم أو ما يماثله","من 4 ذو الحجة إلى 14 ذو الحجة","إفطار + عشاء أوبن بوفيه"],
+      ["المناسك","مخيمات مكيفة فاخرة بعرفات ومنى","من 8 ذو الحجة إلى 13 ذو الحجة","إفطار + غداء + عشاء + مشروبات + فاكهة + عصائر"]
+    ],
+    details:["الانتقال من مكة إلى المدينة بقطار الحرمين السريع أو العكس."]
+  },
+  {
+    id:"tourist-plus", type:"حج سياحي",
+    title:"الحج السياحي + 5,000 دولار",
+    price:"", currency:"",
+    description:"برنامج الحج + 5,000 دولار حسب البرنامج المختار."
+  },
+  {
+    id:"lottery", type:"حج القرعة",
+    title:"حج القرعة",
+    price:"", currency:"",
+    description:"الاختيار حسب البرنامج الذي يختاره العميل، مع تطبيق شروط وإجراءات القرعة."
+  }
+];
+
+const commonFeatures = [
+  "ندوات دينية تشمل الشرح التفصيلي للمناسك طوال فترة البرنامج لضمان أداء المناسك على سنة الحبيب محمد ﷺ.",
+  "المزارات الدينية وجميع المناسك بصحبة مجموعة مشرفين دينيين مصاحبين للحجاج.",
+  "إشراف إداري من الشركة على أعلى مستوى من الرقي لخدمة السادة الحجاج عن جميع مراحل الرحلة المباركة.",
+  "هدايا قيمة لكل حاج: كتيب مناسك، كيس حذاء، كيس جمرات، حقيبة سفر ترولي، حقيبة ظهر."
+];
+
+const bookingConditions = [
+  "ألا يقل عمر المتقدم عن 25 عامًا ميلاديًا (سيدات - رجال).",
+  "بالنسبة لعمر المرافق لمقدم الطلب يبدأ من سن 12 عامًا فأكثر ومن الأقارب حتى الدرجة الرابعة.",
+  "لا تقل صلاحية جواز السفر عن عام من تاريخ الرحلة (للحجاج الفائزين).",
+  "لا تقل صلاحية بطاقة الرقم القومي عن عام.",
+  "يستثنى من التقدم لقرعة حج السياحة من له سابقة حج أو تقدم بقرعة حج التضامن أو الداخلية.",
+  "في حالة عدم التوفيق في القرعة يتم استرداد مبلغ جدية الحجز في مدة لا تقل عن شهر بحوالة بالرقم القومي للمتقدم ببنك مصر أو ما تقرره وزارة السياحة.",
+  "يسمح بتسجيل الارتباط العائلي بحد أقصى 5 أفراد لكل ارتباط."
 ];
 
 let offers = [];
 
-function money(v,c){ if(v===undefined||v===null||v==="") return ""; return `${Number(v).toLocaleString("ar-EG")} ${c||""}`; }
+function money(v,c){
+  if(v===undefined || v===null || v==="") return "";
+  return `${Number(v).toLocaleString("ar-EG")} ${c||"جنيه"}`;
+}
+function escapeHtml(s){
+  return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+}
+function escapeAttr(s){ return String(s??"").replace(/'/g,"\\'"); }
+
+function rowsTable(o){
+  if(!o.rows?.length) return "";
+  return `<div class="table-wrap"><table class="program-table">
+    <thead><tr><th>المكان</th><th>الإقامة</th><th>الفترة</th><th>نوع الإقامة</th></tr></thead>
+    <tbody>${o.rows.map(r=>`<tr>${r.map(c=>`<td>${escapeHtml(c)}</td>`).join("")}</tr>`).join("")}</tbody>
+  </table></div>`;
+}
 
 function card(o){
-  const bullets=[];
-  if(o.installment) bullets.push(`التقسيط: ${o.installment}`);
-  if(o.installmentMonths) bullets.push(`مدة التقسيط: ${o.installmentMonths} شهر`);
-  if(o.type==="حج سياحي") bullets.push("البرنامج + 5,000 دولار");
-  if(o.type==="حج القرعة") bullets.push("اختيار البرنامج حسب المتاح");
+  const details = (o.details||[]).map(x=>`<li>${escapeHtml(x)}</li>`).join("");
+  const extras = o.installment
+    ? `<li>التقسيط: ${escapeHtml(o.installment)}</li><li>مدة التقسيط: ${escapeHtml(o.installmentMonths)} شهر</li>` : "";
   return `<article class="offer ${o.id==="mayassar"?"featured":""}">
     <span class="eyebrow">${escapeHtml(o.type||"حج")}</span>
     <h3>${escapeHtml(o.title||o.name||"برنامج حج")}</h3>
-    ${o.price?`<div class="price">${money(o.price,o.currency||"جنيه")}</div>`:""}
-    <p class="muted">${escapeHtml(o.description||"تفاصيل البرنامج متاحة عند التسجيل.")}</p>
-    <ul>${bullets.map(x=>`<li>${escapeHtml(x)}</li>`).join("")}</ul>
+    ${o.price!=="" && o.price!==undefined ? `<div class="price">${money(o.price,o.currency)}</div>` : `<div class="price price-text">حسب البرنامج</div>`}
+    ${o.description?`<p class="muted">${escapeHtml(o.description)}</p>`:""}
+    ${o.deposit?`<div class="deposit"><b>جدية الحجز:</b> ${escapeHtml(o.deposit)}</div>`:""}
+    ${o.note?`<div class="note">${escapeHtml(o.note)}</div>`:""}
+    ${rowsTable(o)}
+    ${(details||extras)?`<ul>${details}${extras}</ul>`:""}
     <div class="actions"><button class="primary" onclick="selectOffer('${escapeAttr(o.id||"")}')">سجل في البرنامج</button></div>
   </article>`;
 }
 
-function escapeHtml(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));}
-function escapeAttr(s){return String(s??"").replace(/'/g,"\\'");}
-
 async function loadOffers(){
-  if(!CONFIG.API_URL || CONFIG.API_URL.includes("PASTE_")){
-    offers=fallbackOffers;
-  } else {
+  if(!CONFIG.API_URL){ offers=fallbackOffers; }
+  else {
     try{
       const r=await fetch(`${CONFIG.API_URL}?action=list&table=hajj_offers`);
       const d=await r.json();
@@ -44,6 +210,8 @@ async function loadOffers(){
     }catch(e){ offers=fallbackOffers; }
   }
   document.querySelector("#offersGrid").innerHTML=offers.map(card).join("");
+  document.querySelector("#commonFeatures").innerHTML=commonFeatures.map(x=>`<li>${escapeHtml(x)}</li>`).join("");
+  document.querySelector("#conditions").innerHTML=bookingConditions.map(x=>`<p>• ${escapeHtml(x)}</p>`).join("");
   updatePrograms();
 }
 
@@ -58,7 +226,8 @@ function selectOffer(id){
 function updatePrograms(){
   const type=document.querySelector("#hajjType").value;
   const list=offers.filter(o=>!type || o.type===type);
-  document.querySelector("#programId").innerHTML=`<option value="">اختر البرنامج</option>`+
+  document.querySelector("#programId").innerHTML=
+    `<option value="">اختر البرنامج</option>`+
     list.map(o=>`<option value="${escapeHtml(o.id)}">${escapeHtml(o.title||o.name)}</option>`).join("");
 }
 
@@ -68,20 +237,27 @@ document.querySelector("#bookingForm").addEventListener("submit",async e=>{
   e.preventDefault();
   const msg=document.querySelector("#formMessage");
   const data=Object.fromEntries(new FormData(e.target).entries());
+  const selected=offers.find(o=>String(o.id)===String(data.programId));
+  data.programTitle=selected?.title||"";
   data.createdAt=new Date().toISOString();
   data.status="جديد";
   try{
-    if(CONFIG.API_URL && !CONFIG.API_URL.includes("PASTE_")){
-      const r=await fetch(CONFIG.API_URL,{method:"POST",body:JSON.stringify({action:"upsert",table:"hajj_bookings",record:data})});
+    if(CONFIG.API_URL){
+      const r=await fetch(CONFIG.API_URL,{
+        method:"POST",
+        body:JSON.stringify({action:"upsert",table:"hajj_bookings",record:data})
+      });
       const d=await r.json();
       if(d.ok===false) throw new Error(d.error||"تعذر الحفظ");
-    }else{
+    } else {
       localStorage.setItem("hajj_demo_last_booking",JSON.stringify(data));
     }
     msg.textContent="تم تسجيل بياناتك بنجاح، وسنتواصل معك لاستكمال التفاصيل.";
-    msg.style.color="green"; e.target.reset(); updatePrograms();
+    msg.style.color="green";
+    e.target.reset();
+    updatePrograms();
   }catch(err){
-    msg.textContent="حدث خطأ أثناء التسجيل. راجع إعداد رابط Google Apps Script.";
+    msg.textContent="حدث خطأ أثناء التسجيل. راجع إعدادات Google Apps Script.";
     msg.style.color="#a33";
   }
 });

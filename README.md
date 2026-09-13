@@ -1,36 +1,21 @@
-# Hajj Offers Website — GitHub + Google Sheets
+# Hamsa Travel — Hajj 1448 Website
 
-## 1) Google Sheet
-أنشئ Google Sheet جديد، ثم افتح:
-Extensions → Apps Script
-والصق `google-apps-script/Code.gs`.
+## التشغيل
+1. افتح `app.js`.
+2. رابط Google Apps Script موجود بالفعل في `CONFIG.API_URL`.
+3. ارفع الملفات إلى GitHub Pages.
+4. افتح الموقع وجرب نموذج التسجيل.
 
-بعدها:
-Deploy → New deployment → Web app
-- Execute as: Me
-- Who has access: Anyone
+## الملفات
+- `index.html` واجهة الموقع.
+- `style.css` التصميم.
+- `app.js` البرامج + ربط Google Sheets.
+- `google-apps-script/Code.gs` الباك إند.
+- `assets/programs-1448.pdf` الملف الأصلي لبرامج الحج 1448 هـ.
 
-انسخ رابط الـ Web App.
+## Google Sheets
+الباك إند يستخدم:
+- `hajj_offers`
+- `hajj_bookings`
 
-## 2) ربط الموقع
-افتح `app.js` واستبدل:
-PASTE_GOOGLE_APPS_SCRIPT_URL_HERE
-برابط Apps Script.
-
-## 3) عروض الحج
-يمكنك وضع العروض في شيت `hajj_offers` بهذه الأعمدة:
-id | type | title | price | currency | installmentMonths | installment | description | active
-
-مثال:
-mayassar | حج ميسر | الحج الميسر | 120000 | جنيه | 24 | 5000 جنيه شهريًا | دفع كامل للبرنامج مع إمكانية تقسيط مبلغ 120 ألف جنيه على 24 شهر | true
-
-tourist | حج سياحي | الحج السياحي | | | | | برنامج الحج + 5,000 دولار حسب البرنامج | true
-
-lottery | حج القرعة | حج القرعة | | | | | اختيار البرنامج حسب المتاح | true
-
-## 4) تسجيل العملاء
-البيانات تدخل في `hajj_bookings`:
-id | name | phone | governorate | hajjType | programId | notes | status | createdAt
-
-## ملاحظة
-النسخة الحالية هي MVP للواجهة والتسجيل والربط مع Google Sheets. الأسعار والتفاصيل قابلة للتعديل من الشيت.
+إذا كانت ورقة `hajj_offers` فارغة، الموقع يستخدم البيانات المضمنة داخل `app.js` تلقائيًا.
