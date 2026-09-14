@@ -179,7 +179,7 @@ function escapeAttr(s){ return String(s??"").replace(/'/g,"\\'"); }
 function rowsTable(o){
   if(!o.rows?.length) return "";
   return `<div class="table-wrap"><table class="program-table">
-    <thead><tr><th>المكان</th><th>الإقامة</th><th>الفترة</th><th>نوع الإقامة</th></tr></thead>
+    <thead><tr><th>المكان</th><th>الإقامة</th><th>الفترة</th><th>الوجبات</th></tr></thead>
     <tbody>${o.rows.map(r=>`<tr>${r.map(c=>`<td>${escapeHtml(c)}</td>`).join("")}</tr>`).join("")}</tbody>
   </table></div>`;
 }
