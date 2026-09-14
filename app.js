@@ -1,5 +1,5 @@
 const CONFIG = {
-  API_URL: "https://script.google.com/macros/s/AKfycbyhK4MsDRoUIsCD19xFK-AdWKv-Fe-bR1JjeWQjcYKYo5DYKeP5KDiSDC-3barhq5exfQ/exec"
+  API_URL: "https://script.google.com/macros/s/AKfycbx-jcz2eGz6H1bJuRO6AA1dDGVlDg5O2eBvLGfhGQ7PNliPuYKY2malC2tHXosPLr1o7Q/exec"
 };
 
 // برامج الحج 1448 هـ لشركة همسة للسياحة.
