@@ -1,0 +1,86 @@
+/**
+ * Hajj Offers Website -> Google Sheets Backend
+ * 1) أنشئ Google Sheet.
+ * 2) افتح Extensions > Apps Script والصق هذا الملف.
+ * 3) Deploy > New deployment > Web app.
+ * 4) Execute as: Me / Who has access: Anyone.
+ *
+ * الجداول التي ينشئها الكود تلقائياً:
+ * hajj_offers
+ * hajj_bookings
+ *
+ * الحقول الأساسية للعروض:
+ * id,type,title,price,currency,installmentMonths,installment,description,active
+ */
+
+const SHEETS = {
+  hajj_offers: ["id","type","title","price","currency","installmentMonths","installment","description","active"],
+  hajj_bookings: ["id","name","phone","governorate","hajjType","programId","notes","status","createdAt"]
+};
+
+function doGet(e){
+  try{
+    const p=e?.parameter||{};
+    if(p.action==="list" && p.table) return json({ok:true,rows:listRows(p.table)});
+    return json({ok:true,service:"hajj-google-sheets-backend"});
+  }catch(err){return json({ok:false,error:String(err)});}
+}
+
+function doPost(e){
+  try{
+    const body=JSON.parse(e?.postData?.contents||"{}");
+    if(!body.table) return json({ok:false,error:"Missing table"});
+    if(body.action==="upsert") return json({ok:true,row:upsertRow(body.table,body.record||{})});
+    return json({ok:false,error:"Unsupported action"});
+  }catch(err){return json({ok:false,error:String(err)});}
+}
+
+function getSS_(){
+  return SpreadsheetApp.getActiveSpreadsheet();
+}
+
+function ensureSheet_(name){
+  const ss=getSS_();
+  let sh=ss.getSheetByName(name);
+  if(!sh) sh=ss.insertSheet(name);
+  const headers=SHEETS[name];
+  if(headers){
+    const first=sh.getRange(1,1,1,headers.length).getValues()[0];
+    if(first.every(x=>!x)) sh.getRange(1,1,1,headers.length).setValues([headers]);
+  }
+  return sh;
+}
+
+function listRows(name){
+  const sh=ensureSheet_(name);
+  const values=sh.getDataRange().getValues();
+  if(values.length<2) return [];
+  const headers=values[0].map(String);
+  return values.slice(1).filter(r=>r.some(x=>x!=="")).map(r=>{
+    const o={}; headers.forEach((h,i)=>o[h]=r[i]); return o;
+  });
+}
+
+function upsertRow(name,record){
+  const sh=ensureSheet_(name);
+  const headers=SHEETS[name] || Object.keys(record);
+  if(!headers.length) throw new Error("Unknown table");
+  if(!record.id) record.id=Utilities.getUuid();
+  const values=sh.getDataRange().getValues();
+  let rowIndex=-1;
+  if(values.length>1){
+    const idCol=Math.max(0,headers.indexOf("id"));
+    for(let i=1;i<values.length;i++){
+      if(String(values[i][idCol])===String(record.id)){rowIndex=i+1;break;}
+    }
+  }
+  const row=headers.map(h=>record[h]??"");
+  if(rowIndex<0) sh.appendRow(row);
+  else sh.getRange(rowIndex,1,1,headers.length).setValues([row]);
+  return record;
+}
+
+function json(o){
+  return ContentService.createTextOutput(JSON.stringify(o))
+    .setMimeType(ContentService.MimeType.JSON);
+}
