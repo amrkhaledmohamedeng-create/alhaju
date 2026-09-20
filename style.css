@@ -1,16 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap');
 
 :root{
-  --bg:#F4F6FB;
+  --bg:#F8F9FB;
   --paper:#FFFFFF;
   --ink:#161B2E;
-  --muted:#5B6280;
-  --gold:#F0B400;
-  --gold-dark:#A97C00;
-  --teal:#12234A;
-  --teal-2:#23418A;
-  --line:#DCE2F0;
-  --cream-2:#E7ECF8;
+  --muted:#57608A;
+  --gold:#FACA12;
+  --gold-dark:#9B7D0B;
+  --teal:#23418A;
+  --teal-2:#2F63AE;
+  --line:#E0E4EF;
+  --cream-2:#F0F2F7;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -41,7 +41,7 @@ h1,h2,h3,.brand,.price,.contact-phone{font-family:'Amiri',serif}
 }
 .hero-overlay{
   position:absolute;inset:0;z-index:1;
-  background:linear-gradient(165deg,rgba(18,35,74,.90),rgba(18,35,74,.55) 55%,rgba(18,35,74,.45));
+  background:linear-gradient(165deg,rgba(35,65,138,.90),rgba(35,65,138,.55) 55%,rgba(35,65,138,.45));
 }
 .nav,.hero-content{position:relative;z-index:2}
 .nav{height:86px;display:flex;align-items:center;justify-content:space-between}
@@ -52,7 +52,7 @@ h1,h2,h3,.brand,.price,.contact-phone{font-family:'Amiri',serif}
 .nav-btn:hover{background:var(--gold);color:var(--teal)}
 .hero-content{padding-top:110px;max-width:740px;padding-bottom:110px}
 .eyebrow{font-family:'Amiri',serif;font-style:italic;font-weight:400;color:var(--gold);font-size:19px}
-.hero .eyebrow{color:#E7CB86}
+.hero .eyebrow{color:#FCDD65}
 .hero h1{font-size:clamp(36px,5.4vw,62px);line-height:1.25;margin:12px 0 18px;font-weight:700}
 .hero p{font-size:19px;line-height:1.95;color:#E9E4D8;max-width:52ch}
 .primary{
@@ -61,7 +61,7 @@ h1,h2,h3,.brand,.price,.contact-phone{font-family:'Amiri',serif}
   padding:13px 26px;border-radius:4px;font-family:inherit;font-weight:700;
   font-size:16px;cursor:pointer;transition:background .2s,transform .15s;
 }
-.primary:hover{background:#D9A200}
+.primary:hover{background:#D4AC0F}
 .primary:active{transform:translateY(1px)}
 .primary:focus-visible,.secondary:focus-visible,.nav-btn:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 
@@ -128,12 +128,12 @@ h1,h2,h3,.brand,.price,.contact-phone{font-family:'Amiri',serif}
 /* ---------- dark / features ---------- */
 .dark{
   background:
-    radial-gradient(circle at 8% 20%,rgba(240,180,0,.10),transparent 40%),
-    radial-gradient(circle at 92% 80%,rgba(240,180,0,.08),transparent 45%),
+    radial-gradient(circle at 8% 20%,rgba(250,202,18,.10),transparent 40%),
+    radial-gradient(circle at 92% 80%,rgba(250,202,18,.08),transparent 45%),
     var(--teal);
   color:#fff;
 }
-.dark .section-head p{color:#AEB9DD}
+.dark .section-head p{color:#ABB7D3}
 .dark h2::after{background:var(--gold)}
 .feature-list{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;list-style:none;padding:0;margin:0}
 .feature-list li{
@@ -150,9 +150,9 @@ h1,h2,h3,.brand,.price,.contact-phone{font-family:'Amiri',serif}
 .gallery-item{margin:0;position:relative;aspect-ratio:4/3;overflow:hidden}
 .gallery-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease}
 .gallery-item:hover img{transform:scale(1.04)}
-.gallery-item::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(18,35,74,.82) 0%,rgba(18,35,74,.05) 42%)}
+.gallery-item::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(35,65,138,.82) 0%,rgba(35,65,138,.05) 42%)}
 .gallery-item figcaption{position:absolute;right:0;bottom:0;left:0;padding:26px 28px;z-index:2;color:#fff}
-.gallery-item figcaption .eyebrow{color:#E7CB86;font-size:15px;display:block;margin-bottom:2px}
+.gallery-item figcaption .eyebrow{color:#FCDD65;font-size:15px;display:block;margin-bottom:2px}
 .gallery-item h3{margin:2px 0 0;font-size:24px;font-weight:700}
 
 /* ---------- conditions ---------- */
@@ -185,7 +185,7 @@ h1,h2,h3,.brand,.price,.contact-phone{font-family:'Amiri',serif}
 .full{grid-column:1/-1}
 .form-message{grid-column:1/-1;font-weight:600}
 
-footer{padding:30px 0;background:var(--teal);color:#C3CBE6;text-align:center;font-family:'Amiri',serif;font-size:16px}
+footer{padding:30px 0;background:var(--teal);color:#C7CEE6;text-align:center;font-family:'Amiri',serif;font-size:16px}
 footer .container{display:flex;align-items:center;justify-content:center;gap:10px}
 .footer-logo{height:26px;width:auto;opacity:.9}
 
