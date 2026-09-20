@@ -1,16 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap');
 
 :root{
-  --bg:#F7F4EA;
-  --paper:#FFFDF9;
-  --ink:#1A1F2E;
-  --muted:#666F8A;
+  --bg:#F4F6FB;
+  --paper:#FFFFFF;
+  --ink:#161B2E;
+  --muted:#5B6280;
   --gold:#F0B400;
-  --gold-dark:#8A6B0C;
+  --gold-dark:#A97C00;
   --teal:#12234A;
   --teal-2:#23418A;
-  --line:#DCE1EE;
-  --cream-2:#EDF0F8;
+  --line:#DCE2F0;
+  --cream-2:#E7ECF8;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -103,7 +103,7 @@ h1,h2,h3,.brand,.price,.contact-phone{font-family:'Amiri',serif}
 .offer .price{font-size:30px;font-weight:700;color:var(--gold-dark);margin:14px 0}
 .offer .price-text{font-size:19px}
 .offer .muted{color:var(--muted)}
-.offer ul{padding-right:20px;line-height:2;color:#40473f;margin:14px 0}
+.offer ul{padding-right:20px;line-height:2;color:#333A4D;margin:14px 0}
 .offer .deposit{margin:16px 0;padding:12px 14px;border-radius:4px;background:var(--cream-2);border-right:3px solid var(--gold);font-size:15px}
 .offer .note{margin:14px 0;padding:10px 14px;border-radius:4px;background:#FBF3DC;font-size:.9rem;border-right:3px solid #D9BE7A}
 .offer .actions{margin-top:24px;border-top:1px dashed var(--line);padding-top:20px}
