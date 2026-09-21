@@ -50,6 +50,9 @@ h1,h2,h3,.brand,.price,.contact-phone{font-family:'Amiri',serif}
 .brand span{color:var(--gold)}
 .nav-btn{color:#fff;text-decoration:none;border:1px solid var(--gold);padding:10px 20px;border-radius:4px;transition:background .2s,color .2s}
 .nav-btn:hover{background:var(--gold);color:var(--teal)}
+.nav-actions{display:flex;gap:10px;align-items:center}
+.nav-btn-back{border-color:rgba(255,255,255,.45)}
+.nav-btn-back:hover{border-color:var(--gold)}
 .hero-content{padding-top:110px;max-width:740px;padding-bottom:110px}
 .eyebrow{font-family:'Amiri',serif;font-style:italic;font-weight:400;color:var(--gold);font-size:19px}
 .hero .eyebrow{color:#FCDD65}
@@ -191,6 +194,8 @@ footer .container{display:flex;align-items:center;justify-content:center;gap:10p
 
 @media(max-width:800px){
   .offers-grid,.info-grid,.booking-form,.feature-list{grid-template-columns:1fr}
+  .nav{height:auto;padding:16px 0;flex-wrap:wrap;gap:12px}
+  .nav-btn{padding:8px 14px;font-size:14px}
   .hero{min-height:580px}
   .hero-content{padding-top:90px}
   .section{padding:64px 0}
